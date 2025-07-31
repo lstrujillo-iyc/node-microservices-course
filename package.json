@@ -1,0 +1,36 @@
+{
+  "name": "course",
+  "version": "1.0.0",
+  "description": "Construye un backend poderoso con Node.js, enfocándote en autenticación con JWT, arquitectura de microservicios y uso de Redis. Aprende a diseñar sistemas escalables, seguros y eficientes para aplicaciones modernas. Ideal para desarrolladores avanzados.",
+  "main": "index.js",
+  "scripts": {
+    "phoenix": "rm -f package-lock.json && rm -rf ./node_modules && npm i --no-fund --no-audit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "code:check": "npm run format:check && npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lstrujillo-iyc/node-course.git"
+  },
+  "keywords": [],
+  "author": "Stiven Trujillo <lstrujillo@incolmotos-yamaha.com.co>",
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/lstrujillo-iyc/node-course/issues"
+  },
+  "homepage": "https://github.com/lstrujillo-iyc/node-course#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.32.0",
+    "eslint": "^9.32.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.3",
+    "prettier": "^3.6.2"
+  }
+}
