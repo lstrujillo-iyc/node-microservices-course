@@ -5,22 +5,22 @@ const db = {
   ],
 };
 
-function list(table) {
+async function list(table) {
   return db[table] || [];
 }
 
-function get(table, id) {
-  return list(table)?.find(item => item.id === id) || null;
+async function get(table, id) {
+  return (await list(table))?.find(item => item.id === id) || null;
 }
 
-function upsert(table, data) {
-  list(table).push(data);
+async function upsert(table, data) {
+  (await list(table)).push(data);
 }
 
-function remove(table, id) {
-  const index = list(table).findIndex(item => item.id === id);
+async function remove(table, id) {
+  const index = (await list(table)).findIndex(item => item.id === id);
   if (index !== -1) {
-    list(table).splice(index, 1);
+    (await list(table)).splice(index, 1);
     return true;
   }
   return false;

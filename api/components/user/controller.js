@@ -1,11 +1,46 @@
-const store = require('../../../store/dummy');
+const nanoid = require('nanoid');
 
-const TABLA = 'user';
+const TABLE = 'user';
 
-function list() {
-  return store.list(TABLA);
-}
+/**
+ * @param {import('../../../types/store').Store} [injectedStore] - Store inyectado opcionalmente
+ */
+module.exports = function (injectedStore) {
+  /** @type {import('../../../types/store').Store} */
+  let store = injectedStore;
+  if (!store) {
+    store = require('../../../store/dummy');
+  }
 
-module.exports = {
-  list,
+  function list() {
+    return store.list(TABLE);
+  }
+
+  function get(id) {
+    return store.get(TABLE, id);
+  }
+
+  function upsert(body) {
+    const user = {
+      name: body.name,
+    };
+    if (body.id) {
+      user.id = body.id;
+    } else {
+      user.id = nanoid.nanoid();
+    }
+
+    return store.upsert(TABLE, user);
+  }
+
+  function remove(id) {
+    return store.remove(TABLE, id);
+  }
+
+  return {
+    list,
+    get,
+    upsert,
+    remove,
+  };
 };

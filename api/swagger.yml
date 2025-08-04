@@ -1,0 +1,209 @@
+openapi: 3.0.4
+info:
+  title: Node Microservices Course
+  description: Red Social en NodeJS
+  license:
+    name: MIT
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+  - url: https://localhost:3000/api
+tags:
+  - name: user
+    description: Operaciones sobre el usuario
+paths:
+  /user:
+    get:
+      tags:
+        - user
+      summary: Lista los usuarios
+      operationId: listUser
+      responses:
+        '200':
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - user
+      summary: Crea un usuario.
+      description: Crea un usuario en nuestra app.
+      operationId: createUser
+      requestBody:
+        description: Usuario a crear
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Usuario creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /user/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID del usuario
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - user
+      summary: Obtiene un usuario por ID
+      operationId: getUser
+      responses:
+        '200':
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - user
+      summary: Actualiza un usuario existente
+      operationId: updateUser
+      requestBody:
+        description: Usuario con campos a actualizar
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Usuario actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - user
+      summary: Elimina un usuario por ID
+      operationId: deleteUser
+      responses:
+        '200':
+          description: Usuario eliminado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+          readOnly: true
+        name:
+          type: string
+          example: John Doe
+      required:
+        - name
+    ApiResponse:
+      type: object
+      properties:
+        error:
+          type: boolean
+          example: false
+        status:
+          type: integer
+          example: 200
+        body:
+          oneOf:
+            - type: string
+            - type: object
+      required:
+        - error
+        - status
+        - body
+    Error:
+      type: object
+      properties:
+        error:
+          type: boolean
+          example: true
+        status:
+          type: integer
+          example: 500
+        body:
+          type: string
+          example: 'Internal Server Error'
+      required:
+        - error
+        - status
+        - body
+  requestBodies:
+    UserArray:
+      description: List of user object
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
